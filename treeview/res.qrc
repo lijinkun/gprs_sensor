@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/new/prefix1">
-        <file alias="green">images/Aqua Ball Green.ico</file>
-        <file alias="red">images/Aqua Ball Red.ico</file>
-        <file>images/Aqua Ball.ico</file>
-    </qresource>
-</RCC>
