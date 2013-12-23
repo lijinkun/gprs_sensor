@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>ACDSEE2.ICO</file>
+        <file>ACDSEE4.ICO</file>
+        <file>ACDSEE.ICO</file>
+        <file>APPLICATIONS.ICO</file>
+        <file>Aqua Ball Green.ico</file>
+        <file>Aqua Ball Red.ico</file>
+        <file>Aqua Ball.ico</file>
+        <file>CONTROLPANEL.ICO</file>
+        <file>ffpic13061218539712_32.ico</file>
+        <file>SEA MONSTER.ICO</file>
+        <file>ACROBAT.ICO</file>
+        <file>ADDRESS BOOK.ICO</file>
+        <file>ADOBE PHOTOSHOP CS.ICO</file>
+        <file>DOWNLOADS567.ICO</file>
+        <file>HD TOOLS.ICO</file>
+    </qresource>
+</RCC>

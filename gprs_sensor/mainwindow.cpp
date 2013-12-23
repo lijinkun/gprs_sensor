@@ -39,14 +39,14 @@ MainWindow::MainWindow(QWidget *parent) :
     receTextEdit->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
     clearButton = new QPushButton("clear");
-    clearButton->setMaximumSize(50,30);
-    clearButton->setMinimumSize(50,30);
+    clearButton->setMaximumSize(100,30);
+    clearButton->setMinimumSize(100,30);
     clearButton->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed );
     clearButton->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
     saveButton = new QPushButton("save");
-    saveButton->setMaximumSize(50,30);
-    saveButton->setMinimumSize(50,30);
+    saveButton->setMaximumSize(100,30);
+    saveButton->setMinimumSize(100,30);
     saveButton->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed );
     saveButton->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
