@@ -11,6 +11,9 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QList>
+#include <QSplitter>
+#include <QTableView>
+#include <QGLWidget>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -117,6 +120,17 @@ MainWindow::MainWindow(QWidget *parent) :
     sendDockWidget->setMinimumSize(100,100);
     sendDockWidget->setSizePolicy( QSizePolicy::Expanding,QSizePolicy::Expanding);
     this->addDockWidget(Qt::RightDockWidgetArea, sendDockWidget);
+
+
+    nodeTable = new QTableView();
+    struct3DScene = new QGLWidget();
+    QSplitter *splitter= new QSplitter(Qt::Vertical, 0);
+
+
+    splitter->addWidget(nodeTable);
+    splitter->addWidget(struct3DScene);
+    this->setCentralWidget(splitter);
+
 }
 
 MainWindow::~MainWindow()
