@@ -7,7 +7,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class QTreeView;
+class TreeView;
 class QStandardItemModel;
 class QStandItem;
 class QTextEdit;
@@ -15,7 +15,7 @@ class QPushButton;
 class QRadioButton;
 class QList<QRadioButton>;
 class QTableView;
-class QGLWidget;
+class GLWindow;
 
 
 class MainWindow : public QMainWindow
@@ -33,7 +33,7 @@ private:
   //  void allSignalConnect();
 private:
     Ui::MainWindow *ui;
-    QTreeView * treeView;
+    TreeView * treeView;
     QStandardItemModel * mode;
     QStandItem * item;
     QTextEdit * sendTextEdit;
@@ -42,8 +42,8 @@ private:
     QPushButton * sendButton;
     QPushButton * clearButton;
     QPushButton * saveButton;
-    QTableView * nodeTable;
-    QGLWidget * struct3DScene;
+    TreeView * nodeView;
+    GLWindow * struct3DScene;
 
 };
 

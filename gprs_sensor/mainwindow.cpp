@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDockWidget>
-#include <QTreeView>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QTextEdit>
@@ -12,8 +11,8 @@
 #include <QVBoxLayout>
 #include <QList>
 #include <QSplitter>
-#include <QTableView>
-#include <QGLWidget>
+#include "glwindow.h"
+#include "treeview.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -22,11 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("gprs_sensor");
 
-    treeView = new QTreeView();
-    mode = new QStandardItemModel(0,1,this);
-    mode->setHeaderData(0, Qt::Horizontal, tr("Network Struct"));
-    treeView->setColumnWidth(0,200);
-    treeView->setModel(mode);
+    treeView = new TreeView();
+    treeView->setAllEnable(true, false, false, true);
+    treeView->showExample();
 
     QDockWidget * treeDockWidget = new QDockWidget(this);
     treeDockWidget->setWidget(treeView);
@@ -122,20 +119,24 @@ MainWindow::MainWindow(QWidget *parent) :
     this->addDockWidget(Qt::RightDockWidgetArea, sendDockWidget);
 
 
-    nodeTable = new QTableView();
-    struct3DScene = new QGLWidget();
+    nodeView = new TreeView();
+    nodeView->setAllEnable(false, false, true, true);
+    struct3DScene = new GLWindow();
     QSplitter *splitter= new QSplitter(Qt::Vertical, 0);
 
 
-    splitter->addWidget(nodeTable);
+    splitter->addWidget(nodeView);
     splitter->addWidget(struct3DScene);
     this->setCentralWidget(splitter);
-
+    struct3DScene->showExample();
+    nodeView->showExample2();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
 
 

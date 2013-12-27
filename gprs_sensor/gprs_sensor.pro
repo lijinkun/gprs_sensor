@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-QT += opengl
+QT       += opengl widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,9 +14,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    glwindow.cpp \
+    treeview.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    glwindow.h \
+    treeview.h
 
 FORMS    += mainwindow.ui
 
