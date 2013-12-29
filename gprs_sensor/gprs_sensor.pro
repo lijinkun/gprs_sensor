@@ -8,6 +8,11 @@ QT       += core gui
 QT       += opengl widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4) {
+    QT       += widgets serialport
+} else {
+    include($$QTSERIALPORT_PROJECT_ROOT/src/serialport/qt4support/serialport.prf)
+}
 
 TARGET = gprs_sensor
 TEMPLATE = app
@@ -16,13 +21,16 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     glwindow.cpp \
-    treeview.cpp
+    treeview.cpp \
+    settingsdialog.cpp
 
 HEADERS  += mainwindow.h \
     glwindow.h \
-    treeview.h
+    treeview.h \
+    settingsdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    settingsdialog.ui
 
 RESOURCES += \
     images/res.qrc

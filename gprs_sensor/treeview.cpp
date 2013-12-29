@@ -138,26 +138,37 @@ void TreeView::ShowMouseRightButton(const QPoint& pos)
 
 }
 
-void TreeView::setColumn(int column, int width,  QString  RootID,  QString  NodeIDHead)
+void TreeView::setColumn(int column, int width,  QString  rootID,  QString  nodeIDHead)
 {
     mode = new QStandardItemModel(0,column,this);
-    mode->setHeaderData(0, Qt::Horizontal, QString("%1").arg(RootID));
+    mode->setHeaderData(0, Qt::Horizontal, QString("%1").arg(rootID));
     this->setColumnWidth(0,200);
 
     for(int i = 1; i < column; ++i)
     {
 
-        mode->setHeaderData(i, Qt::Horizontal, QString("%1_%2").arg(NodeIDHead).arg(i));
+        mode->setHeaderData(i, Qt::Horizontal, QString("%1_%2").arg(nodeIDHead).arg(i));
         this->setColumnWidth(i,width);
     }
     this->setModel(mode);
+}
+
+void TreeView::deleteNode(int rootID, int nodeID)
+{
+    mode->item(rootID)->removeRow(nodeID);
 }
 
 void TreeView::deleteNode(void)
 {
     QModelIndex index = currentIndex();
 
-    mode->removeRow(index.row(),index.parent());
+    mode->item(index.parent().row())->removeRow(index.row());
+
+}
+
+void TreeView::deleteRoot(int rootID)
+{
+    mode->removeRow(rootID);
 }
 
 void TreeView::deleteRoot(void)
@@ -165,6 +176,14 @@ void TreeView::deleteRoot(void)
     QModelIndex index = currentIndex();
 
     mode->removeRow(index.row());
+}
+
+void TreeView::insertNode(int rootID, int nodeID, QString nodeName)
+{
+        QStandardItem * item = new QStandardItem(nodeName);
+        item->setCheckable(1);//使能复选框
+        item->setIcon(QIcon(":/image/Aqua Ball Green.ico"));
+        mode->item(rootID-1)->insertRow(nodeID, item);
 }
 
 void TreeView::insertNode(void)
@@ -189,6 +208,16 @@ void TreeView::insertNode(void)
 }
 
 
+void TreeView::insertRoot(int rootID, QString rootName)
+{
+
+        QStandardItem * item = new QStandardItem(rootName);
+        item->setCheckable(1);//使能复选框
+        item->setIcon(QIcon(":/image/Aqua Ball.ico"));
+        mode->insertRow(rootID-1, item);
+}
+
+
 void TreeView::insertRoot(void)
 {
 
@@ -207,6 +236,17 @@ void TreeView::insertRoot(void)
         item->setIcon(QIcon(":/image/Aqua Ball.ico"));
         mode->insertRow(index.row(), item);
     }
+
+}
+
+
+void TreeView::addNode(int rootID, QString nodeName)
+{
+
+            QStandardItem * item = new QStandardItem(nodeName);
+            item->setCheckable(1);//使能复选框
+            item->setIcon(QIcon(":/image/Aqua Ball Green.ico"));
+            mode->item(rootID-1)->appendRow(item);
 
 }
 
@@ -237,6 +277,13 @@ void TreeView::addNode(void)
     }
 }
 
+void TreeView::addRoot(QString rootName)
+{
+        QStandardItem * item = new QStandardItem(rootName);
+        item->setCheckable(1);
+        item->setIcon(QIcon(":/image/Aqua Ball.ico"));
+        mode->appendRow(item);
+}
 
 void TreeView::addRoot(void)
 {

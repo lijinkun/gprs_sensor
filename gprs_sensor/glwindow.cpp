@@ -83,6 +83,9 @@ void GLWindow::paintGL()
 
     drawGrid();
     buildRoot();
+
+   // QMetaObject::invokeMethod(this,"updateGL",Qt::QueuedConnection);
+
 }
 
 void GLWindow::resizeGL(int width, int height)
@@ -158,6 +161,7 @@ void GLWindow::buildNode(qint32 num)
 
 void GLWindow::addNode(qint32 nodeID, qint32 rootID)
 {
+    Q_UNUSED(rootID);
 
     nodeList.push_back(nodeID);
 
@@ -192,6 +196,7 @@ void GLWindow::buildRoot(void)
                //结束绘点
         glEnd();
         glRotatef(rPoint, 0.0,1.0,0.0);
+        rPoint += 0.1;
         buildNode(i);
     }
 

@@ -19,15 +19,15 @@ public:
     void showExample2(void);
     void setAllEnable(bool rightClick, bool douckClickEdit,
                                 bool multiSelect ,bool enable);
-    void setColumn(int column, int width, QString RootID, QString NodeIDHead = NULL);
+    void setColumn(int column, int width, QString rootID, QString nodeIDHead = NULL);
 
-   /* void deleteNode(void);
-    void deleteRoot(void);
-    void addRoot(void);
-    void addNode(void);
-    void insertNode(void);
-    void insertRoot(void);
-    void debugNode(void);*///havent achieve
+    void deleteNode(int rootID, int nodeID);
+    void deleteRoot(int rootID);
+    void addRoot(QString rootName);
+    void addNode(int rootID, QString nodeName);
+    void insertNode(int rootID, int nodeID, QString nodeName);
+    void insertRoot(int rootID, QString rootName);
+    //virtual void debugNode(void);
 signals:
 
 public slots:
