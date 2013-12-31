@@ -1,0 +1,36 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>images/Picture - BMP.ico</file>
+        <file alias="time">images/Clock.ico</file>
+        <file>images/ffpic1306121836412_16.ico</file>
+        <file>images/ffpic13061218138425_16(1).ico</file>
+        <file>images/ffpic13061218235655_16(1).ico</file>
+        <file>images/ffpic13061218411266_16.ico</file>
+        <file>images/ffpic13061218489746_16.ico</file>
+        <file>images/ffpic13061218539712_16.ico</file>
+        <file>images/ffpic13061218636942_16.ico</file>
+        <file>images/ffpic13061218636943_16.ico</file>
+        <file alias="color">images/ffpic13061218812649_16.ico</file>
+        <file>images/ffpic13061218812651_16.ico</file>
+        <file>images/ffpic13061218891032_16.ico</file>
+        <file>images/ffpic13061218988259_16.ico</file>
+        <file>images/ffpic13061218988260_16.ico</file>
+        <file alias="edit">images/ffpic13061218988263_16.ico</file>
+        <file alias="quit">images/ffpic13061218988264_16.ico</file>
+        <file alias="save ass">images/Folder Closed Blue.ico</file>
+        <file>images/Folder Closed Brown.ico</file>
+        <file alias="save">images/Folder Closed Green.ico</file>
+        <file>images/Folder Closed Red.ico</file>
+        <file>images/Folder Closed Silver.ico</file>
+        <file alias="open">images/Folder Closed.ico</file>
+        <file alias="new">images/Folder Open Blue.ico</file>
+        <file>images/Folder Open Brown.ico</file>
+        <file>images/Folder Open Green.ico</file>
+        <file>images/Folder Open Red.ico</file>
+        <file alias="brower">images/Globe.ico</file>
+        <file alias="find">images/Magnifying Glass.ico</file>
+        <file>images/Pen 2.ico</file>
+        <file>images/Pen 3.ico</file>
+        <file alias="font">images/Pen.ico</file>
+    </qresource>
+</RCC>
