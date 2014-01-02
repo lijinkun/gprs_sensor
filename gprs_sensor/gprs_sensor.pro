@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       += opengl widgets
+QT       += network widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 greaterThan(QT_MAJOR_VERSION, 4) {
@@ -22,15 +23,22 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     glwindow.cpp \
     treeview.cpp \
-    settingsdialog.cpp
+    settingsdialog.cpp \
+    tcpserverdialog.cpp \
+    recedockwidget.cpp \
+    senddockwidget.cpp
 
 HEADERS  += mainwindow.h \
     glwindow.h \
     treeview.h \
-    settingsdialog.h
+    settingsdialog.h \
+    tcpserverdialog.h \
+    recedockwidget.h \
+    senddockwidget.h
 
 FORMS    += mainwindow.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    tcpserverdialog.ui
 
 RESOURCES += \
     images/res.qrc

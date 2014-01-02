@@ -42,12 +42,10 @@
      </property>
      <addaction name="actionSerial_Port_2"/>
      <addaction name="actionTCP_Port_2"/>
-     <addaction name="actionDebug_Port_2"/>
     </widget>
     <addaction name="menuCommunicateTool"/>
     <addaction name="actionSerial_Port"/>
     <addaction name="actionTCP_Port"/>
-    <addaction name="actionDebug_Port"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuConnect">
@@ -102,15 +100,6 @@
    </property>
    <property name="text">
     <string>TCP Port</string>
-   </property>
-  </action>
-  <action name="actionDebug_Port">
-   <property name="icon">
-    <iconset resource="images/res.qrc">
-     <normaloff>:/image/CONTROLPANEL.ICO</normaloff>:/image/CONTROLPANEL.ICO</iconset>
-   </property>
-   <property name="text">
-    <string>Debug Port</string>
    </property>
   </action>
   <action name="actionConnect">
@@ -188,19 +177,10 @@
   <action name="actionTCP_Port_2">
    <property name="icon">
     <iconset resource="images/res.qrc">
-     <normaloff>:/image/SEA MONSTER.ICO</normaloff>:/image/SEA MONSTER.ICO</iconset>
+     <normaloff>:/image/DOWNLOADS567.ICO</normaloff>:/image/DOWNLOADS567.ICO</iconset>
    </property>
    <property name="text">
     <string>TCP Port</string>
-   </property>
-  </action>
-  <action name="actionDebug_Port_2">
-   <property name="icon">
-    <iconset resource="images/res.qrc">
-     <normaloff>:/image/Aqua Ball Green.ico</normaloff>:/image/Aqua Ball Green.ico</iconset>
-   </property>
-   <property name="text">
-    <string>Debug Port</string>
    </property>
   </action>
   <action name="actionQuit">

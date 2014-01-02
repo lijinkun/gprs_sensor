@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QtSerialPort/QSerialPort>
-
 namespace Ui {
 class MainWindow;
 }
@@ -11,16 +10,14 @@ class MainWindow;
 class TreeView;
 class QStandardItemModel;
 class QStandItem;
-class QTextEdit;
-class QPushButton;
-class QRadioButton;
-class QList<QRadioButton>;
 class QTableView;
 class GLWindow;
 class SettingsDialog;
-//class QSerialPort;
+class TcpServerDialog;
+class ReceDockWidget;
+class SendDockWidget;
 
-enum PortType{Serial, Tcp, Debug};
+enum PortType{Serial, Tcp};
 
 class MainWindow : public QMainWindow
 {
@@ -29,6 +26,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    void writeSerialData(const QString data);
+    void writeTcpData(const QString data);
 
 private slots:
     void treeDockShowPolicy(void);
@@ -39,44 +39,40 @@ private slots:
     void setSerialPort(void);
     bool openSerialPort(void);
     void closeSerialPort(void);
-    void writeData(const QByteArray &data);
-    void readData(void);
+    void readSerialData(void);
     void handleError(QSerialPort::SerialPortError error);
+
+    void selectTcpPort(void);
+    void setTcpPort(void);
+    bool openTcpPort(void);
+    bool closeTcpPort(void);
+    void readTcpData(QString str);
 
     void openPort(void);
     void closePort(void);
+    void sendData(void);
 
     void howToUse(void);
 private:
-
-    void initActionsConnections();
+    void initAllConnections();
 private:
     Ui::MainWindow *ui;
+
     QDockWidget * treeDockWidget;
     TreeView * treeView;
     QStandardItemModel * mode;
     QStandItem * item;
 
-    QDockWidget * sendDockWidget;
-    QTextEdit * sendTextEdit;
-    QList <QRadioButton *> radioButtonList;
-    QPushButton * sendButton;
-    QPushButton * clearButton;
-    QPushButton * saveButton;
-
-    QDockWidget * receDockWidget;
-    QTextEdit * receTextEdit;
-
+    SendDockWidget * sendDockWidget;
+    ReceDockWidget * receDockWidget;
 
     TreeView * nodeView;
     GLWindow * struct3DScene;
 
-
+    PortType portType;
     SettingsDialog *settings;
     QSerialPort *serial;
-    PortType portType;
-
-
+    TcpServerDialog * tcpServer;
 
 };
 

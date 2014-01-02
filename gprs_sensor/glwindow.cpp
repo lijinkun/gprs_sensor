@@ -196,7 +196,6 @@ void GLWindow::buildRoot(void)
                //结束绘点
         glEnd();
         glRotatef(rPoint, 0.0,1.0,0.0);
-        rPoint += 0.1;
         buildNode(i);
     }
 

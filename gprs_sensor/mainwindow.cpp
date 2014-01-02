@@ -3,10 +3,8 @@
 #include <QDockWidget>
 #include <QStandardItem>
 #include <QStandardItemModel>
-#include <QTextEdit>
 #include <QGroupBox>
 #include <QPushButton>
-#include <QRadioButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QList>
@@ -18,6 +16,13 @@
 #include <QtSerialPort/QSerialPort>
 #include <QIcon>
 #include <QDebug>
+#include "tcpserverdialog.h"
+#include "recedockwidget.h"
+#include "senddockwidget.h"
+#include <QDateTime>
+#include <QFile>
+#include <QFileDialog>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -27,17 +32,16 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle("gprs_sensor");
 
 
-    portType = Debug;
-
+    portType = Tcp;
 
     this->serial = new QSerialPort(this);
-    settings = new SettingsDialog;
+    settings = new SettingsDialog(this);
+
+    this->tcpServer = new TcpServerDialog(this);
+
 
     ui->actionConnect->setEnabled(true);
     ui->actionDisconnect->setEnabled(false);
-
-    initActionsConnections();
-
 
     treeView = new TreeView();
     treeView->setAllEnable(true, false, false, true);
@@ -56,101 +60,23 @@ MainWindow::MainWindow(QWidget *parent) :
     treeDockWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
     this->addDockWidget(Qt::LeftDockWidgetArea, treeDockWidget);
 
-    receTextEdit = new QTextEdit();
-    receTextEdit->setMinimumSize(100,100);
-    receTextEdit->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
-    clearButton = new QPushButton("clear");
-    clearButton->setMaximumSize(100,30);
-    clearButton->setMinimumSize(100,30);
-    clearButton->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed );
-    clearButton->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-
-    saveButton = new QPushButton("save");
-    saveButton->setMaximumSize(100,30);
-    saveButton->setMinimumSize(100,30);
-    saveButton->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed );
-    saveButton->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-
-    QHBoxLayout * receLayout1 = new QHBoxLayout;
-    QHBoxLayout * receLayout2 = new QHBoxLayout;
-    QVBoxLayout * receLayout3 = new QVBoxLayout;
-    receLayout1->addWidget(receTextEdit);
-    receLayout2->addWidget(saveButton);
-    receLayout2->addWidget(clearButton);
-    receLayout3->addLayout(receLayout1);
-    receLayout3->addLayout(receLayout2);
-    QGroupBox * receBox = new QGroupBox("receive");
-    receBox->setLayout(receLayout3);
-
-    receDockWidget = new QDockWidget(this);
+    receDockWidget = new ReceDockWidget(this);
     receDockWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetVerticalTitleBar);
-    receDockWidget->setWidget(receBox);
     receDockWidget->setMinimumWidth(200);
     receDockWidget->setSizePolicy( QSizePolicy::Fixed,QSizePolicy::Expanding);
     this->addDockWidget(Qt::RightDockWidgetArea, receDockWidget);
 
-    sendTextEdit = new QTextEdit();
-    receTextEdit = new QTextEdit();
-    sendTextEdit->setMinimumSize(100,100);
-    sendTextEdit->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-
-    sendButton = new QPushButton("send");
-    sendButton->setMaximumSize(100,50);
-    sendButton->setMinimumSize(100,50);
-    sendButton->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed );
-    sendButton->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    QRadioButton * brocastUpdateButton = new QRadioButton("all update");
-    QRadioButton * brocastDebugButton = new QRadioButton("all debug");
-    QRadioButton * selectUpdateButton = new QRadioButton("select update");
-    QRadioButton * selectDebugButton = new QRadioButton("select debug");
-    QRadioButton * otherButton = new QRadioButton("write in");
-    radioButtonList.append(brocastUpdateButton);
-    radioButtonList.append(brocastDebugButton);
-    radioButtonList.append(selectUpdateButton);
-    radioButtonList.append(selectDebugButton);
-    radioButtonList.append(otherButton);
-
-    QHBoxLayout * sendLayout1 = new QHBoxLayout;
-    QHBoxLayout * sendLayout2 = new QHBoxLayout;
-    QVBoxLayout * sendLayout3 = new QVBoxLayout;
-    QHBoxLayout * sendLayout4 = new QHBoxLayout;
-    QHBoxLayout * sendLayout5 = new QHBoxLayout;
-    QHBoxLayout * sendLayout6 = new QHBoxLayout;
-    QVBoxLayout * sendLayout7 = new QVBoxLayout;
-    QHBoxLayout * sendLayout8 = new QHBoxLayout;
-    sendLayout1->addWidget(brocastUpdateButton);
-    sendLayout1->addWidget(brocastDebugButton);
-    sendLayout2->addWidget(selectUpdateButton);
-    sendLayout2->addWidget(selectDebugButton);
-    sendLayout8->addWidget(otherButton);
-    sendLayout3->addLayout(sendLayout1);
-    sendLayout3->addLayout(sendLayout2);
-    sendLayout3->addLayout(sendLayout8);
-    sendLayout4->addWidget(sendButton);
-    sendLayout5->addLayout(sendLayout3);
-    sendLayout5->addLayout(sendLayout4);
-    sendLayout6->addWidget(sendTextEdit);
-    sendLayout7->addLayout(sendLayout6);
-    sendLayout7->addLayout(sendLayout5);
-
-    QGroupBox * sendBox = new QGroupBox("send");
-    sendBox->setLayout(sendLayout7);
-
-    sendDockWidget = new QDockWidget(this);
+    this->sendDockWidget = new SendDockWidget(this);
     sendDockWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetVerticalTitleBar);
-    sendDockWidget->setWidget(sendBox);
-
     sendDockWidget->setMinimumSize(100,100);
     sendDockWidget->setSizePolicy( QSizePolicy::Expanding,QSizePolicy::Expanding);
     this->addDockWidget(Qt::RightDockWidgetArea, sendDockWidget);
 
-
     nodeView = new TreeView();
     nodeView->setAllEnable(false, false, true, true);
-    struct3DScene = new GLWindow();
+    struct3DScene = new GLWindow(this);
     QSplitter *splitter= new QSplitter(Qt::Vertical, 0);
-
 
     splitter->addWidget(nodeView);
     splitter->addWidget(struct3DScene);
@@ -158,11 +84,11 @@ MainWindow::MainWindow(QWidget *parent) :
     struct3DScene->showExample();
     nodeView->showExample2();
 
+    initAllConnections();
 }
 
 MainWindow::~MainWindow()
 {
-    delete settings;
     delete ui;
 }
 
@@ -184,12 +110,12 @@ void MainWindow::receDockShowPolicy(void)
 {
     if(this->receDockWidget->isHidden())
     {
-        this->receDockWidget->show();
+        receDockWidget->show();
         ui->actionRece_Window->setIcon(QIcon(":/image/ACDSEE2.ICO"));
     }
     else
     {
-        this->receDockWidget->hide();
+        receDockWidget->hide();
         ui->actionRece_Window->setIcon(QIcon(":/image/ACDSEE4.ICO"));
     }
 }
@@ -205,6 +131,14 @@ void MainWindow::sendDockShowPolicy(void)
         this->sendDockWidget->hide();
         ui->actionSend_Window->setIcon(QIcon(":/image/ACDSEE4.ICO"));
     }
+}
+
+bool MainWindow::openTcpPort()
+{
+    if(tcpServer->serverListen(true))
+        return true;
+    else
+        return false;
 }
 
 bool MainWindow::openSerialPort()
@@ -241,6 +175,13 @@ bool MainWindow::openSerialPort()
     }
 }
 
+bool MainWindow::closeTcpPort()
+{
+    if(tcpServer->serverListen(false))
+        return true;
+    else
+        return false;
+}
 
 void MainWindow::closeSerialPort()
 {
@@ -248,15 +189,28 @@ void MainWindow::closeSerialPort()
     ui->statusBar->showMessage(tr("Disconnected"));
 }
 
-void MainWindow::writeData(const QByteArray &data)
+void MainWindow::writeSerialData(const QString data)
 {
-    serial->write(data);
+    QByteArray block;
+
+    block.append(data);
+    serial->write(block);
 }
 
-void MainWindow::readData()
+void MainWindow::writeTcpData(const QString data)
+{
+    tcpServer->writeClient(data);
+}
+
+void MainWindow::readSerialData()
 {
     QByteArray data = serial->readAll();
-    //console->putData(data);
+    receDockWidget->appendText(data);
+}
+
+void MainWindow::readTcpData(QString str)
+{
+    receDockWidget->appendText(str);
 }
 
 void MainWindow::handleError(QSerialPort::SerialPortError error)
@@ -267,32 +221,49 @@ void MainWindow::handleError(QSerialPort::SerialPortError error)
     }
 }
 
-void MainWindow::initActionsConnections()
+void MainWindow::initAllConnections()
 {
     QObject::connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(openPort()));
     QObject::connect(ui->actionDisconnect, SIGNAL(triggered()), this, SLOT(closePort()));
     QObject::connect(ui->actionSerial_Port, SIGNAL(triggered()), this, SLOT(setSerialPort()));
+    QObject::connect(ui->actionTCP_Port, SIGNAL(triggered()), this, SLOT(setTcpPort()));
     QObject::connect(ui->actionSerial_Port_2, SIGNAL(triggered()), this, SLOT(selectSerialPort()));
+    QObject::connect(ui->actionTCP_Port_2, SIGNAL(triggered()), this, SLOT(selectTcpPort()));
     QObject::connect(ui->actionStruct_Window, SIGNAL(triggered()), this, SLOT(treeDockShowPolicy()));
     QObject::connect(ui->actionRece_Window, SIGNAL(triggered()), this, SLOT(receDockShowPolicy()));
     QObject::connect(ui->actionSend_Window, SIGNAL(triggered()), this, SLOT(sendDockShowPolicy()));
     QObject::connect(ui->actionAbout, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
     QObject::connect(ui->actionHow_to_use, SIGNAL(triggered()), this, SLOT(howToUse()));
+    QObject::connect(serial, SIGNAL(readyRead()), this, SLOT(readSerialData()));
+    QObject::connect(tcpServer, SIGNAL(readReady(QString)), this, SLOT(readTcpData(QString)));
+    QObject::connect(sendDockWidget, SIGNAL(sendButtonClick()), this, SLOT(sendData()));
 }
 void MainWindow::setSerialPort()
 {
     settings->show();
 }
 
+void MainWindow::setTcpPort()
+{
+
+    this->tcpServer->show();
+}
+
 void MainWindow::selectSerialPort(void)
 {
-   // ui->actionSerial_Port_2->setIcon(QIcon(:/image/DOWNLOADS567.ICO));
     ui->actionSerial_Port_2->setIcon(QIcon(":/image/DOWNLOADS567.ICO"));
     ui->actionTCP_Port_2->setIcon(QIcon(":/image/SEA MONSTER.ICO"));
-    ui->actionDebug_Port_2->setIcon(QIcon(":/image/SEA MONSTER.ICO"));
+
     portType = Serial;
 }
 
+void MainWindow::selectTcpPort(void)
+{
+    ui->actionSerial_Port_2->setIcon(QIcon(":/image/SEA MONSTER.ICO"));
+    ui->actionTCP_Port_2->setIcon(QIcon(":/image/DOWNLOADS567.ICO"));
+    portType = Tcp;
+
+}
 
 void MainWindow::openPort()
 {
@@ -306,19 +277,26 @@ void MainWindow::openPort()
             ui->actionSerial_Port_2->setEnabled(false);
             ui->actionSerial_Port->setEnabled(false);
             ui->actionTCP_Port_2->setEnabled(false);
-            ui->actionDebug_Port_2->setEnabled(false);
             ui->actionConnect->setIcon(QIcon(":/image/DOWNLOADS567.ICO"));
             ui->actionDisconnect->setIcon(QIcon(":/image/SEA MONSTER.ICO"));
         }
         break;
     case Tcp:
+        if(openTcpPort())
+        {
+            ui->actionConnect->setEnabled(false);
+            ui->actionDisconnect->setEnabled(true);
+            ui->actionSerial_Port_2->setEnabled(false);
+            ui->actionTCP_Port->setEnabled(false);
+            ui->actionTCP_Port_2->setEnabled(false);
+            ui->actionConnect->setIcon(QIcon(":/image/DOWNLOADS567.ICO"));
+            ui->actionDisconnect->setIcon(QIcon(":/image/SEA MONSTER.ICO"));
+        }
         break;
-    case Debug:
-        break;
-
     }
 
 }
+
 
 void MainWindow::closePort()
 {
@@ -330,17 +308,39 @@ void MainWindow::closePort()
         ui->actionDisconnect->setEnabled(false);
         ui->actionSerial_Port_2->setEnabled(true);
         ui->actionTCP_Port_2->setEnabled(true);
-        ui->actionDebug_Port_2->setEnabled(true);
         ui->actionSerial_Port->setEnabled(true);
         ui->actionConnect->setIcon(QIcon(":/image/SEA MONSTER.ICO"));
         ui->actionDisconnect->setIcon(QIcon(":/image/DOWNLOADS567.ICO"));
         break;
     case Tcp:
-        break;
-    case Debug:
+        if(closeTcpPort())
+        {
+            ui->actionConnect->setEnabled(true);
+            ui->actionDisconnect->setEnabled(false);
+            ui->actionSerial_Port_2->setEnabled(true);
+            ui->actionTCP_Port_2->setEnabled(true);
+            ui->actionTCP_Port->setEnabled(true);
+            ui->actionConnect->setIcon(QIcon(":/image/SEA MONSTER.ICO"));
+            ui->actionDisconnect->setIcon(QIcon(":/image/DOWNLOADS567.ICO"));
+        }
         break;
     }
+}
 
+void MainWindow::sendData()
+{
+
+    switch(portType)
+    {
+    case Serial:
+        if(!ui->actionConnect->isEnabled())
+            writeSerialData(this->sendDockWidget->toPlainText());
+        break;
+    case Tcp:
+        if(!ui->actionConnect->isEnabled())
+         writeTcpData(this->sendDockWidget->toPlainText());
+        break;
+    }
 }
 
 void MainWindow::howToUse()

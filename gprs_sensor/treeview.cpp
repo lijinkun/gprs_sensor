@@ -330,3 +330,9 @@ void TreeView::setAllEnable(bool rightClick, bool douckClickEdit, bool multiSele
     else
         this->setContextMenuPolicy(Qt::DefaultContextMenu);
 }
+
+
+QStandardItemModel * TreeView::getMode(void)
+{
+    return mode;
+}

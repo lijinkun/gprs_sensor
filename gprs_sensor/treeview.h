@@ -27,6 +27,8 @@ public:
     void addNode(int rootID, QString nodeName);
     void insertNode(int rootID, int nodeID, QString nodeName);
     void insertRoot(int rootID, QString rootName);
+    QStandardItemModel * getMode(void);
+
     //virtual void debugNode(void);
 signals:
 
